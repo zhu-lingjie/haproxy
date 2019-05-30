@@ -1,5 +1,5 @@
 # haproxy
-Create an haproxy with ansible 
+Create an haproxy with multiple webservers using ansible 
 
 > If you want to try out this on your own, you will need: 
 - vagrant 
