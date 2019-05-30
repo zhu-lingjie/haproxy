@@ -18,3 +18,52 @@ The `Vagrantfile` will create 6 virtual machine in total.
 - webservers: handle http requests 
 
 
+### setup ansible on the control machine 
+```bash
+lingjie$ vagrant ssh control 
+[vagrant@control ~]$ sudo su -
+Last login: Thu May 30 03:43:36 UTC 2019 on pts/0
+[root@control ~]# 
+yum install ansible -y 
+
+# make a project direcoty where we will run our playbooks 
+mkdir ha && cd ha 
+
+cat << EOF >>inventory  
+[lb]
+10.0.0.11 
+[web]
+10.0.0.2[1:4]
+EOF
+```
+
+> note: 
+For centos machines, password login is disabled, so I manually copied the ssh-keys over, this can be done by using a shell provision script in the Vagrant file, I didn't do that since I already started the machines and feeling lazy :P 
+
+1. run the deploy-web-server.yml to configure the httpd on the web servers 
+```yml
+--- 
+- name: install httpd and config the httpd content 
+  hosts: web
+  tasks: 
+  - name: install httpd 
+    yum: 
+      name: "{{item}}" 
+      state: latest
+    with_items: 
+    - mod_ssl 
+    - httpd 
+
+  - name: config httpd 
+    copy:
+      content: "{{inventory_hostname}}"
+      dest: "/var/www/html/index.html"
+    notify: 
+    - restart httpd 
+
+  handlers: 
+  - name: restart httpd 
+    service: name=httpd state=restarted 
+```
+
+2. configure the haproxy server 
