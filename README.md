@@ -1,10 +1,10 @@
 # haproxy
 Create an haproxy with ansible 
 
-> If you want to try out this on your own
+> If you want to try out this on your own, you will need: 
 - vagrant 
 - virtualbox  
 - internet connection (for downloading the box)
 
-> For production
-- require an ansible envrionment only
+> For production, you will need: 
+- just an ansible envrionment
