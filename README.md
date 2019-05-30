@@ -8,3 +8,13 @@ Create an haproxy with multiple webservers using ansible
 
 > For production, you will need: 
 - just an ansible envrionment
+
+### environment 
+laptop -- control -- lb -- webservers ( * 4) 
+
+The `Vagrantfile` will create 6 virtual machine in total. 
+- control: run all the ansible playbook to control the lb and webservers
+- lb: traffic control 
+- webservers: handle http requests 
+
+
